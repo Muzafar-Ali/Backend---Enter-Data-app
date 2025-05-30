@@ -57,3 +57,82 @@ export const createRecordHandler = async ( req: Request<{}, {}, RecordInputType[
     });
   }
 };
+
+export const getUserWiseRecordsHandler = async (req: Request, res: Response) => {
+  try {
+    const userId = req.userId;
+
+    const records = await RecordModel.find({ user: userId }).lean();
+
+    res.status(httpStatus.OK).json({
+      success: true,
+      data: records
+    });
+
+  } catch (error: any) {
+    logger.error({
+      message: error,
+      path: req.originalUrl,
+      method: req.method,
+      ip: req.ip,
+      userAgent: req.headers['user-agent']
+    });
+
+    res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: 'Internal server error'
+    });
+  }
+};
+
+export const getAllRecordsHandler = async (req: Request, res: Response) => {
+  try {
+    const records = await RecordModel.find().lean();
+
+    res.status(httpStatus.OK).json({
+      success: true,
+      data: records
+    });
+
+  } catch (error: any) {
+    logger.error({
+      message: error,
+      path: req.originalUrl,
+      method: req.method,
+      ip: req.ip,
+      userAgent: req.headers['user-agent']
+    });
+
+    res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: 'Internal server error'
+    });
+  }
+};
+
+export const getRecordsByDistrictHandler = async(req: Request, res: Response) => {
+  try {
+    const district = req.params.district;
+    
+    const records = await RecordModel.find({ district }).lean();
+
+    res.status(httpStatus.OK).json({
+      success: true,
+      data: records
+    });
+
+  } catch (error: any) {
+    logger.error({
+      message: error,
+      path: req.originalUrl,
+      method: req.method,
+      ip: req.ip,
+      userAgent: req.headers['user-agent']
+    });
+
+    res.status(httpStatus.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: 'Internal server error'
+    });
+  }
+};

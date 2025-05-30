@@ -86,7 +86,11 @@ export const userLoginHandler = async (req: Request, res: Response) => {
   res.status(httpStatus.OK).json({
     success: true,
     message: 'User logged in successfully',
-    userRole: user.role
+    user: {
+      id: user._id,
+      district: user.district,
+      role: user.role
+    }
   });
   
  } catch (error) {
