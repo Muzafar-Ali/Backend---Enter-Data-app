@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 const recordSchema = new mongoose.Schema({
+  category: { type: String, required: true },
   district: { type: String, required: true },
   police_station: { type: String, required: true },
   crime: { type: String, required: true },

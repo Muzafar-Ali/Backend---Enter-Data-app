@@ -2,6 +2,9 @@ import { z } from "zod"
 
 export const recordSchema = z.object({
   body: z.object({
+    category: z.string({
+      required_error: "Category is required",
+    }),
     district: z.string({
       required_error: "District is required",
     }),
