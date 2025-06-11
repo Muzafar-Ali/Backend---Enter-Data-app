@@ -1,35 +1,38 @@
 import mongoose from "mongoose";
+import { TRecordDocument } from "../types/record.types";
 
-const recordSchema = new mongoose.Schema({
-  category: { type: String, required: true },
-  district: { type: String, required: true },
-  police_station: { type: String, required: true },
-  crime: { type: String, required: true },
-  operated_by: { type: String, required: true },
-  CNIC: { type: String, required: true, match: /^[0-9]{13}$/ },
-  dens_location: { type: String, required: true },
-  cell_number: { type: String, required: true },
-  by_police: { 
-    name: { type: String, default: '' },
-    rank: { type: String, default: '' },
-    posting: { type: String, default: '' },
-  },
-  by_political_person: {
-  details: { type: String, default: '' },
-  },
-  by_others_private: {
-    details: { type: String, default:'' },
-  },
-  status: { type: String, enum: ['Active', 'Inactive', 'Reactive'] },
-  CRMS_No: { type: String, required: true },
-  FIR: { 
+const recordSchema = new mongoose.Schema<TRecordDocument>(
+  {
+    CNIC: {
+      type: String,
+      required: true,
+      match: /^[0-9]{13}$/,
+      minlength: 13,
+      maxlength: 13,
+    },
+    CRMS_No: { type: String },
+    FIR_PS_name: { type: String },
+    FIR_district: { type: String },
     FIR_no: { type: String },
     FIR_year: { type: String },
-    FIR_PS: { type: String },
-    FIR_district: { type: String },
-  },
-  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
-})
+    by_others: { type: String },
+    by_police: { type: String },
+    by_political_person: { type: String },
+    category: { type: String },
+    cell_number: { type: String },
+    dens_location: { type: String },
+    district: { type: String },
+    operated_by: { type: String },
+    police_station: { type: String },
+    remarks: { type: String },
+    status: { type: String },
+    type_of_Narcotics: { type: String },
 
-const RecordModel = mongoose.model('Record', recordSchema);
+    // Keep user reference (assuming it's for internal tracking)
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  },
+  { timestamps: true } // Adds createdAt & updatedAt automatically
+);
+
+const RecordModel = mongoose.model<TRecordDocument>("Record", recordSchema);
 export default RecordModel;

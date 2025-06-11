@@ -113,6 +113,13 @@ export const getRecordsByDistrictHandler = async(req: Request, res: Response) =>
     
     const records = await RecordModel.find({ district }).lean();
 
+    if (records.length === 0) {
+      res.status(httpStatus.NOT_FOUND).json({
+        success: false,
+        message: 'No records found'
+      });
+    }    
+
     res.status(httpStatus.OK).json({
       success: true,
       data: records
@@ -145,9 +152,9 @@ export const getRecordsByCategoryHandler = async(req: Request, res: Response) =>
       });
     }
     
-    const records = await RecordModel.find({ category: category });
-    
-    if(!records) {
+    const records = await RecordModel.find({ category: category.toUpperCase() });
+     
+    if (records.length === 0) {
       res.status(httpStatus.NOT_FOUND).json({
         success: false,
         message: 'No records found'
